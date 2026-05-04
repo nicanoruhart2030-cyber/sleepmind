@@ -1,9 +1,10 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
+import { GoogleSignInButton } from '@/components/GoogleSignInButton'
 
 export default function SignupPage() {
   const [name, setName] = useState('')
@@ -13,6 +14,13 @@ export default function SignupPage() {
   const [loading, setLoading] = useState(false)
   const router = useRouter()
   const sb = createClient()
+
+  useEffect(() => {
+    const p = new URLSearchParams(window.location.search)
+    if (p.get('error') === 'auth') {
+      setError('Google sign-in did not complete. Try again or use email and password.')
+    }
+  }, [])
 
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault()
@@ -39,6 +47,14 @@ export default function SignupPage() {
           <p className="text-[13px] font-semibold tracking-[-0.01em] text-[#0A0A0B] mb-4">SleepMind</p>
           <h1 className="text-[20px] font-semibold tracking-[-0.02em] text-[#0A0A0B]">Create account</h1>
           <p className="text-sm text-[#52525B] mt-1">Track your sleep debt.</p>
+        </div>
+
+        <GoogleSignInButton label="Sign up with Google" />
+
+        <div className="my-6 flex items-center gap-3">
+          <hr className="flex-1 border-0 border-t border-[rgba(0,0,0,0.06)]" />
+          <span className="text-[11px] text-[#A1A1AA] uppercase tracking-[0.06em]">or</span>
+          <hr className="flex-1 border-0 border-t border-[rgba(0,0,0,0.06)]" />
         </div>
 
         <form onSubmit={onSubmit} className="space-y-4">

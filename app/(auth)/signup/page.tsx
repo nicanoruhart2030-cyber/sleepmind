@@ -18,7 +18,9 @@ export default function SignupPage() {
   useEffect(() => {
     const p = new URLSearchParams(window.location.search)
     if (p.get('error') === 'auth') {
-      setError('Google sign-in did not complete. Try again or use email and password.')
+      setError(
+        'Google sign-in did not complete. If you saw redirect_uri_mismatch, add Supabase’s callback to Google Cloud (see env.example). Otherwise use email and password.'
+      )
     }
   }, [])
 

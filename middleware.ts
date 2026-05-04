@@ -33,7 +33,6 @@ export async function middleware(req: NextRequest) {
   if (!user && path.startsWith('/settings')) return NextResponse.redirect(new URL('/login', req.url))
   if (user && (path === '/login' || path === '/signup'))
     return NextResponse.redirect(new URL('/dashboard', req.url))
-  if (path === '/') return NextResponse.redirect(new URL(user ? '/dashboard' : '/login', req.url))
 
   return res
 }

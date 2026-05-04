@@ -27,7 +27,9 @@ export async function middleware(req: NextRequest) {
 
   if (!user && path.startsWith('/dashboard'))
     return NextResponse.redirect(new URL('/login', req.url))
-  if (!user && path.startsWith('/log')) return NextResponse.redirect(new URL('/login', req.url))
+  // Use exact `/log` — `startsWith('/log')` incorrectly matches `/login`.
+  if (!user && (path === '/log' || path.startsWith('/log/')))
+    return NextResponse.redirect(new URL('/login', req.url))
   if (!user && path.startsWith('/history')) return NextResponse.redirect(new URL('/login', req.url))
   if (!user && path.startsWith('/insights')) return NextResponse.redirect(new URL('/login', req.url))
   if (!user && path.startsWith('/settings')) return NextResponse.redirect(new URL('/login', req.url))
